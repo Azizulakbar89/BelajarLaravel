@@ -1,0 +1,56 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use illuminate\Http\Request;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+// contoh
+Route::get('/blog', function () {
+    //routes untuk menampilkan tulisan blog
+    return ('blog');
+
+    // route untuk menampilkan blade blog
+    // return view('blog');
+
+    // untuk memanggil data di view atau menampilkan var data ke view (passing data)
+    // return view('blog', ['data' => 'jijul']);
+
+    // routes untuk menampilkan perhitungan langsung
+    // $a = 1;
+    // $b = 2;
+    // $c = $a + $b;
+    // return ('hasil: ' . $c);
+});
+
+// route langsung tanpa adanya aksi
+Route::view('/blog1', 'welcome');
+
+// Route::view('/blog', 'blog', ['data' => 'jijul']);
+
+// named routed untuk fitur redirect
+Route::get('/blog', function () {
+    $profile = 'aku jijul';
+    return view('blog', ['data' => $profile]);
+})->name('blog');
+
+Route::get('/blog/{id}', function (Request $request) {
+    return redirect()->route('blog');
+});
+
+// paramater atau menampilkan berdasarkan id
+// Route::get('/blog/1', function () {
+//     return ('ini adalah blog');
+// });
+
+// parameter id dinamis
+// Route::get('/blog/{id}', function ($id) {
+//     return ('ini adalah blog' . $id);
+// });
+
+// parameter request dari input data 
+// Route::get('/blog/{id}', function (Request $request) {
+//     return ('ini adalah blog' . $request->id);
+// });
