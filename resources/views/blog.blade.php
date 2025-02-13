@@ -10,6 +10,7 @@
 
 <body>
     <h1>Ini ibu budi {{ $data }}</h1>
+    {{--  --}}
 </body>
 
 </html>
