@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -15,11 +16,14 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         DB::table("users")->truncate();
-        DB::table("users")->insert([
-            "name" => Str::random(10),
-            'username' => Str::random(10),
-            "email" => Str::random(10) . '@example.com',
-            "password" => bcrypt("password"),
-        ]);
+        User::factory()
+            ->count(10)
+            ->create();
+        // DB::table("users")->insert([
+        //     "name" => Str::random(10),
+        //     'username' => Str::random(10),
+        //     "email" => Str::random(10) . '@example.com',
+        //     "password" => bcrypt("password"),
+        // ]);
     }
 }

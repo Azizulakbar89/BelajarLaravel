@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('blog', function (Blueprint $table) {
+        Schema::table('blogs', function (Blueprint $table) {
             // mengubah indexing
             $table->string('title')->unique()->change();
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('blog', function (Blueprint $table) {
+        Schema::table('blogs', function (Blueprint $table) {
             // drop table berdasarkan indexing (unique)
             $table->dropIndex('blog_title_unique');
         });

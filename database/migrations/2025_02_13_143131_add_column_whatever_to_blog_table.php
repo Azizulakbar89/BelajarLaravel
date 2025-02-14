@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('blog', function (Blueprint $table) {
+        Schema::table('blogs', function (Blueprint $table) {
             //tambah kolom
             $table->string('whatever', 100)->nullable()->after('description');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('blog', function (Blueprint $table) {
+        Schema::table('blogs', function (Blueprint $table) {
 
             $table->dropColumn('whatever');
         });
