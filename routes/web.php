@@ -27,7 +27,7 @@ Route::get('/', function () {
 // });
 
 // route langsung tanpa adanya aksi
-Route::view('/blog1', 'welcome');
+// Route::view('/blog1', 'welcome');
 
 // Route::view('/blog', 'blog', ['data' => 'jijul']);
 
@@ -56,9 +56,12 @@ Route::view('/blog1', 'welcome');
 //     return ('ini adalah blog' . $request->id);
 // });
 
-Route::get('/blog', [BlogController::class, 'index']);
+Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 
 //Querybuilder
-Route::get('/blog/{id}', function (Request $request) {
-    return 'tes' . $request->id;
-});
+// Route::get('/blog/{id}', function (Request $request) {
+//     return 'tes' . $request->id;
+// });
+
+Route::get('/blog/add', [BlogController::class, 'add']);
+Route::post('/blog/create', [BlogController::class, 'create']);

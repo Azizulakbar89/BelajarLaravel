@@ -20,7 +20,15 @@
         </div>
     </form>
 
+
+
     {{-- menampilkan data --}}
+    <a href="{{ url('/blog/add') }}" class="btn btn-primary mb-3">Tambah Data</a>
+
+    {{-- message --}}
+    @if (Session::has('message'))
+        <p class="alert alert-success">{{ Session::get('message') }}</p>
+    @endif
     <div class="container">
         <div class="mt-5">
             <div class="table-responsive">
