@@ -57,3 +57,8 @@ Route::view('/blog1', 'welcome');
 // });
 
 Route::get('/blog', [BlogController::class, 'index']);
+
+//Querybuilder
+Route::get('/blog/{id}', function (Request $request) {
+    return 'tes' . $request->id;
+});
