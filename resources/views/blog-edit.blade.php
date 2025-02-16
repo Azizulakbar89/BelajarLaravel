@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="description" class="form-label">Deskripsi</label>
-                    <textarea class="form-control" name="description" id="desc-textarea">{{ $blog->description }}"</textarea>
+                    <textarea class="form-control" name="description" id="desc-textarea">{{ $blog->description }}</textarea>
                 </div>
                 <div class="col-md-6 mt-3">
                     <button class="btn btn-success">Save</button>

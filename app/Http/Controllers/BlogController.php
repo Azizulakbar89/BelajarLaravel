@@ -23,12 +23,17 @@ class BlogController extends Controller
         // $blogs = DB::table('blogs')->get();
         // return view('blog', ['blogs' => $blogs]);
 
-        // pencarian
-        $title =  $request->title;
+        // // pencarian
+        // $title =  $request->title;
 
-        // paginate
-        $blogs = DB::table('blogs')->where('title', 'LIKE', '%' . $title . '%')->Paginate(5);
-        return view('blog', ['blogs' => $blogs]);
+        // // paginate
+        // $blogs = DB::table('blogs')->where('title', 'LIKE', '%' . $title . '%')->Paginate(5);
+        // return view('blog', ['blogs' => $blogs]);
+
+        // Eloquent
+        $title = $request->title;
+        $blogs = Blog::where("title", "like", "%" . $title . "%")->orderBy("id", "desc")->paginate(5);
+        return view("blog", ['blogs' => $blogs]);
     }
 
     public function add()
@@ -43,29 +48,42 @@ class BlogController extends Controller
             'title' => 'required|unique:blogs,title|max:255',
             'description' => 'required',
         ]);
-        DB::table('blogs')->insert([
-            'title' => $request->title,
-            'description' => $request->description
-        ]);
+
+        // Query builder
+        // DB::table('blogs')->insert([
+        //     'title' => $request->title,
+        //     'description' => $request->description
+        // ]);
+        // Session::flash('message', 'sukses');
+        // return redirect()->route('blog');
+
+
+        // ELOQUENT
+        Blog::create($request->all());
         Session::flash('message', 'sukses');
         return redirect()->route('blog');
     }
 
     public function show($id)
     {
-        $blog = DB::table('blogs')->where('id', $id)->first();
-        if ($blog == null) {
-            abort(404);
-        }
+        // $blog = DB::table('blogs')->where('id', $id)->first();
+        // menggunakan eloquent
+        $blog = Blog::findOrFail($id);
+        // if ($blog == null) {
+        //     abort(404);
+        // }
         return view('blog-detail', ['blog' => $blog]);
     }
 
     public function edit($id)
     {
-        $blog = DB::table('blogs')->where('id', $id)->first();
-        if ($blog == null) {
-            abort(404);
-        }
+        // $blog = DB::table('blogs')->where('id', $id)->first();
+
+        // ELOQUENT
+        $blog = Blog::findOrFail($id);
+        // if ($blog == null) {
+        //     abort(404);
+        // }
         return view('blog-edit', ['blog' => $blog]);
     }
     public function up(Request $request, $id)
@@ -75,7 +93,9 @@ class BlogController extends Controller
             'title' => 'required|unique:blogs,title,' . $id . '|max:255',
             'description' => 'required',
         ]);
-        DB::table('blogs')->where('id', $id)->update([
+
+        // DB::table('blogs')->where('id', $id)->update([
+        Blog::find($id)->update([
             'title' => $request->title,
             'description' => $request->description
         ]);
@@ -84,7 +104,8 @@ class BlogController extends Controller
     }
     public function delete($id)
     {
-        $blog = DB::table('blogs')->where('id', $id)->delete();
+        // $blog = DB::table('blogs')->where('id', $id)->delete();
+        Blog::find($id)->delete();
         Session::flash('message', 'delete sukses');
         return redirect()->route('blog');
     }
