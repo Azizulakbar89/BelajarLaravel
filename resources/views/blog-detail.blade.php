@@ -18,6 +18,10 @@
                     <td>{{ $blog->title }}</td>
                     <td>{{ $blog->description }}</td>
 
+                    @foreach ($blog->tags as $tag)
+                        {{ $tag->name }}
+                    @endforeach
+
                 </tr>
 
 
