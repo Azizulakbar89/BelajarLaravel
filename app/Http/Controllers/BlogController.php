@@ -50,4 +50,10 @@ class BlogController extends Controller
         Session::flash('message', 'sukses');
         return redirect()->route('blog');
     }
+
+    public function show($id)
+    {
+        $blog = DB::table('blogs')->where('id', $id)->first();
+        return view('blog-detail', ['blog' => $blog]);
+    }
 }
