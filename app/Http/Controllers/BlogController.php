@@ -40,7 +40,7 @@ class BlogController extends Controller
     {
         // validasi
         $request->validate([
-            'title' => 'required|unique:blogs|max:255',
+            'title' => 'required|unique:blogs,title|max:255',
             'description' => 'required',
         ]);
         DB::table('blogs')->insert([
@@ -54,6 +54,38 @@ class BlogController extends Controller
     public function show($id)
     {
         $blog = DB::table('blogs')->where('id', $id)->first();
+        if ($blog == null) {
+            abort(404);
+        }
         return view('blog-detail', ['blog' => $blog]);
+    }
+
+    public function edit($id)
+    {
+        $blog = DB::table('blogs')->where('id', $id)->first();
+        if ($blog == null) {
+            abort(404);
+        }
+        return view('blog-edit', ['blog' => $blog]);
+    }
+    public function up(Request $request, $id)
+    {
+        // validasi
+        $request->validate([
+            'title' => 'required|unique:blogs,title,' . $id . '|max:255',
+            'description' => 'required',
+        ]);
+        DB::table('blogs')->where('id', $id)->update([
+            'title' => $request->title,
+            'description' => $request->description
+        ]);
+        Session::flash('message', 'update sukses');
+        return redirect()->route('blog');
+    }
+    public function delete($id)
+    {
+        $blog = DB::table('blogs')->where('id', $id)->delete();
+        Session::flash('message', 'delete sukses');
+        return redirect()->route('blog');
     }
 }
