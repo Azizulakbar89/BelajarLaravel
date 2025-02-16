@@ -45,7 +45,11 @@
                                 <td>{{ $data->title }}</td>
                                 <td> <a href="{{ url('blog/' . $data->id . '/detail') }}">View</a> |
                                     <a href="{{ url('blog/' . $data->id . '/edit') }}">Edit</a> |
-                                    <a href="{{ url('blog/' . $data->id . '/delete') }}">Delete</a>
+                                    <a href="{{ url('blog/' . $data->id . '/delete') }}">Delete</a> |
+                                    @if ($data->deleted_at !== null)
+                                        <a href="{{ url('blog/' . $data->id . '/restore') }}"
+                                            class="btn btn-success">Restore</a>
+                                    @endif
                                 </td>
 
                             </tr>

@@ -32,7 +32,7 @@ class BlogController extends Controller
 
         // Eloquent
         $title = $request->title;
-        $blogs = Blog::where("title", "like", "%" . $title . "%")->orderBy("id", "desc")->paginate(5);
+        $blogs = Blog::where("title", "like", "%" . $title . "%")->withTrashed()->orderBy("id", "desc")->paginate(5);
         return view("blog", ['blogs' => $blogs]);
     }
 
@@ -107,6 +107,13 @@ class BlogController extends Controller
         // $blog = DB::table('blogs')->where('id', $id)->delete();
         Blog::find($id)->delete();
         Session::flash('message', 'delete sukses');
+        return redirect()->route('blog');
+    }
+
+    // restore softdeletes
+    public function restore(Request $request, $id)
+    {
+        Blog::withTrashed()->findOrFail($id)->restore();
         return redirect()->route('blog');
     }
 }
