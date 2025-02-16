@@ -3,6 +3,7 @@
 use illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -65,8 +66,11 @@ Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 
 Route::get('/blog/add', [BlogController::class, 'add']);
 Route::post('/blog/create', [BlogController::class, 'create']);
-Route::get('/blog/{id}/detail', [BlogController::class, 'show']);
+Route::get('/blog/{id}/detail', [BlogController::class, 'show'])->name('blog-detail');
 Route::get('/blog/{id}/edit', [BlogController::class, 'edit']);
 Route::patch('/blog/{id}/up', [BlogController::class, 'up']);
 Route::get('/blog/{id}/delete', [BlogController::class, 'delete']);
 Route::get('/blog/{id}/restore', [BlogController::class, 'restore']);
+
+Route::post('/comment/{blog_id}', [CommentController::class, 'store']);
+Route::get('comment', [CommentController::class, 'index']);

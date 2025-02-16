@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -68,7 +69,7 @@ class BlogController extends Controller
     {
         // $blog = DB::table('blogs')->where('id', $id)->first();
         // menggunakan eloquent
-        $blog = Blog::findOrFail($id);
+        $blog = Blog::with('comments')->findOrFail($id); //1-M
         // if ($blog == null) {
         //     abort(404);
         // }
