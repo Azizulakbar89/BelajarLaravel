@@ -40,7 +40,8 @@ class BlogController extends Controller
 
     public function add()
     {
-        return view('blog-add');
+        $tags = Tag::all();
+        return view('blog-add', ['tags' => $tags]);
     }
 
     public function create(Request $request)
@@ -61,7 +62,11 @@ class BlogController extends Controller
 
 
         // ELOQUENT
-        Blog::create($request->all());
+        $blog = Blog::create($request->all());
+
+        //ATTACH
+        $blog->tags()->attach($request->tags);
+
         Session::flash('message', 'sukses');
         return redirect()->route('blog');
     }
@@ -82,14 +87,15 @@ class BlogController extends Controller
 
     public function edit($id)
     {
+        $tags = Tag::all();
         // $blog = DB::table('blogs')->where('id', $id)->first();
 
         // ELOQUENT
-        $blog = Blog::findOrFail($id);
+        $blog = Blog::with('tags')->findOrFail($id);
         // if ($blog == null) {
         //     abort(404);
         // }
-        return view('blog-edit', ['blog' => $blog]);
+        return view('blog-edit', ['blog' => $blog, 'tags' => $tags]);
     }
     public function up(Request $request, $id)
     {
@@ -100,10 +106,20 @@ class BlogController extends Controller
         ]);
 
         // DB::table('blogs')->where('id', $id)->update([
-        Blog::find($id)->update([
-            'title' => $request->title,
-            'description' => $request->description
-        ]);
+
+
+        $blog = Blog::findOrFail($id);
+
+        // // detach
+        // $blog->tags()->detach($blog->tags);
+        // // attach
+        // $blog->tags()->attach($request->tags);
+
+        // sync pengganti ATT dan DTT
+        $blog->tags()->sync($request->tags);
+
+        $blog->update($request->all());
+
         Session::flash('message', 'update sukses');
         return redirect()->route('blog');
     }

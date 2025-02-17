@@ -19,6 +19,7 @@
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
+
                     </ul>
                 </div>
             @endif
@@ -33,6 +34,22 @@
                 <div class="col-md-6">
                     <label for="description" class="form-label">Deskripsi</label>
                     <textarea class="form-control" name="description" id="desc-textarea">{{ $blog->description }}</textarea>
+                </div>
+                @if ($blog->tags->count() < 1)
+                    -
+                @endif
+                @foreach ($blog->tags as $tag)
+                    {{ $tag->name }}
+                @endforeach
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Tag:</label>
+                    @foreach ($tags as $key => $tag)
+                        <input type="checkbox" name="tags[]" id="tag{{ $key }}" value="{{ $tag->id }}">
+                        <label class="form-check-label" for="tag{{ $key }}">
+                            {{ $tag->name }}
+                        </label>
+                    @endforeach
+                    </input>
                 </div>
                 <div class="col-md-6 mt-3">
                     <button class="btn btn-success">Save</button>
