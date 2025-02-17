@@ -34,8 +34,10 @@ class BlogController extends Controller
 
         // Eloquent
         $title = $request->title;
-        $blogs = Blog::where("title", "like", "%" . $title . "%")->withTrashed()->orderBy("id", "desc")->paginate(5);
+        $blogs = Blog::with(['tags', 'comments'])->where("title", "like", "%" . $title . "%")->withTrashed()->orderBy("id", "desc")->paginate(5);
         return view("blog", ['blogs' => $blogs]);
+
+        // solving n+1 {with(['tags', 'comments'])->} artinya whit mengambil dari table yang berelasi
     }
 
     public function add()

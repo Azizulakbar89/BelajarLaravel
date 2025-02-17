@@ -36,6 +36,8 @@
                     <thead>
                         <th>No</th>
                         <th>Title</th>
+                        <th>Tags</th>
+                        <th>Comments</th>
                         <th>Actions</th>
                     </thead>
                     <tbody class="table-group-divider">
@@ -43,6 +45,12 @@
                             <tr>
                                 <td>{{ ($blogs->currentpage() - 1) * $blogs->perpage() + $loop->index + 1 }}</td>
                                 <td>{{ $data->title }}</td>
+                                @foreach ($data->tags as $tes)
+                                    <td>{{ $tes->name }}</td>
+                                @endforeach
+                                @foreach ($data->comments as $tes)
+                                    <td>{{ $tes->comment_text }}</td>
+                                @endforeach
                                 <td> <a href="{{ url('blog/' . $data->id . '/detail') }}">View</a> |
                                     <a href="{{ url('blog/' . $data->id . '/edit') }}">Edit</a> |
                                     <a href="{{ url('blog/' . $data->id . '/delete') }}">Delete</a> |
