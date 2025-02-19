@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Document</title>
 </head>
 
@@ -38,6 +39,7 @@
                         <th>Title</th>
                         <th>Image</th>
                         <th>Tags</th>
+                        <th>Rating</th>
                         <th>Comments</th>
                         <th>Actions</th>
                     </thead>
@@ -51,6 +53,32 @@
                                     @foreach ($data->tags as $tes)
                                         <div>{{ $tes->name }}</div>
                                     @endforeach
+                                </td>
+                                {{-- <td>{{ $data->ratings ? $data->ratings->rating_value : '-' }} --}}
+                                <td>
+                                    @if ($data->ratings->count() < 1)
+                                        <i class="far fa-star" style="color: #ffd700;"></i> <!-- Ikon bintang kosong -->
+                                    @else
+                                        @php
+                                            $averageRating = collect($data->ratings->pluck('rating_value'))->avg();
+                                            $fullStars = floor($averageRating);
+                                            $halfStar = $averageRating - $fullStars >= 0.5;
+                                        @endphp
+
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($i <= $fullStars)
+                                                <i class="fas fa-star" style="color: #ffd700;"></i>
+                                                <!-- Ikon bintang penuh -->
+                                            @elseif ($halfStar && $i == $fullStars + 1)
+                                                <i class="fas fa-star-half-alt" style="color: #ffd700;"></i>
+                                                <!-- Ikon setengah bintang -->
+                                            @else
+                                                <i class="far fa-star" style="color: #ffd700;"></i>
+                                                <!-- Ikon bintang kosong -->
+                                            @endif
+                                        @endfor
+                                        ({{ number_format($averageRating, 1) }})
+                                    @endif
                                 </td>
                                 <td>
                                     @foreach ($data->comments as $tes)
