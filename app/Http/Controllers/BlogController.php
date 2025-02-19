@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\Tag;
+use App\Models\Image;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +35,7 @@ class BlogController extends Controller
 
         // Eloquent
         $title = $request->title;
-        $blogs = Blog::with(['tags', 'comments'])->where("title", "like", "%" . $title . "%")->withTrashed()->orderBy("id", "desc")->paginate(5);
+        $blogs = Blog::with(['tags', 'comments', 'image'])->where("title", "like", "%" . $title . "%")->withTrashed()->orderBy("id", "desc")->paginate(5);
         return view("blog", ['blogs' => $blogs]);
 
         // solving n+1 {with(['tags', 'comments'])->} artinya whit mengambil dari table yang berelasi

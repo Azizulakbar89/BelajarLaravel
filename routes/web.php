@@ -3,6 +3,7 @@
 use illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
@@ -74,3 +75,5 @@ Route::get('/blog/{id}/restore', [BlogController::class, 'restore']);
 
 Route::post('/comment/{blog_id}', [CommentController::class, 'store']);
 Route::get('comment', [CommentController::class, 'index']);
+
+Route::get('/images', [ImageController::class, 'index']);

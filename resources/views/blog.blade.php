@@ -36,6 +36,7 @@
                     <thead>
                         <th>No</th>
                         <th>Title</th>
+                        <th>Image</th>
                         <th>Tags</th>
                         <th>Comments</th>
                         <th>Actions</th>
@@ -45,12 +46,17 @@
                             <tr>
                                 <td>{{ ($blogs->currentpage() - 1) * $blogs->perpage() + $loop->index + 1 }}</td>
                                 <td>{{ $data->title }}</td>
-                                @foreach ($data->tags as $tes)
-                                    <td>{{ $tes->name }}</td>
-                                @endforeach
-                                @foreach ($data->comments as $tes)
-                                    <td>{{ $tes->comment_text }}</td>
-                                @endforeach
+                                <td>{{ $data->image ? $data->image->name : '-' }}</td>
+                                <td>
+                                    @foreach ($data->tags as $tes)
+                                        <div>{{ $tes->name }}</div>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach ($data->comments as $tes)
+                                        <div>{{ $tes->comment_text }}</div>
+                                    @endforeach
+                                </td>
                                 <td> <a href="{{ url('blog/' . $data->id . '/detail') }}">View</a> |
                                     <a href="{{ url('blog/' . $data->id . '/edit') }}">Edit</a> |
                                     <a href="{{ url('blog/' . $data->id . '/delete') }}">Delete</a> |
