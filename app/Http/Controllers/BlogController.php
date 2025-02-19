@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\Tag;
+use App\Models\Category;
+use App\Models\Categoriable;
 use App\Models\Image;
 use App\Models\Comment;
 use Illuminate\Http\Request;
@@ -35,7 +37,7 @@ class BlogController extends Controller
 
         // Eloquent
         $title = $request->title;
-        $blogs = Blog::with(['tags', 'comments', 'image', 'ratings'])->where("title", "like", "%" . $title . "%")->withTrashed()->orderBy("id", "desc")->paginate(5);
+        $blogs = Blog::with(['tags', 'comments', 'image', 'ratings', 'categories'])->where("title", "like", "%" . $title . "%")->withTrashed()->orderBy("id", "desc")->paginate(5);
         return view("blog", ['blogs' => $blogs]);
         // return $blogs;
 

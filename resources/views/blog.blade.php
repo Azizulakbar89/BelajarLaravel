@@ -39,6 +39,7 @@
                         <th>Title</th>
                         <th>Image</th>
                         <th>Tags</th>
+                        <th>Category</th>
                         <th>Rating</th>
                         <th>Comments</th>
                         <th>Actions</th>
@@ -54,7 +55,15 @@
                                         <div>{{ $tes->name }}</div>
                                     @endforeach
                                 </td>
-                                {{-- <td>{{ $data->ratings ? $data->ratings->rating_value : '-' }} --}}
+                                <td>
+                                    @if ($data->categories->count() < 1)
+                                        -
+                                    @else
+                                        @foreach ($data->categories as $category)
+                                            <div>{{ $category->name }}</div>
+                                        @endforeach
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($data->ratings->count() < 1)
                                         <i class="far fa-star" style="color: #ffd700;"></i> <!-- Ikon bintang kosong -->

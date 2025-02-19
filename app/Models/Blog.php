@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Models\Image;
+use App\Models\Category;
+use App\Models\Categoriable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Blog extends Model
@@ -46,13 +49,22 @@ class Blog extends Model
 
 
     // Polymorphic
+    // 1-1
     public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
     }
 
+    //1-M
     public function ratings(): MorphMany
     {
         return $this->morphMany(Rating::class, 'ratingable');
+    }
+
+    //M-M
+    public function categories(): MorphToMany
+    {
+        return $this->morphToMany(Category::class, 'categoriable', Categoriable::class);
+        //contoh diatas diakhirnya karena di db singular
     }
 }
