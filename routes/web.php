@@ -2,6 +2,7 @@
 
 use illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CommentController;
@@ -58,22 +59,47 @@ Route::get('/', function () {
 //     return ('ini adalah blog' . $request->id);
 // });
 
-Route::get('/blog', [BlogController::class, 'index'])->name('blog');
+// Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 
 //Querybuilder
 // Route::get('/blog/{id}', function (Request $request) {
 //     return 'tes' . $request->id;
 // });
 
-Route::get('/blog/add', [BlogController::class, 'add']);
-Route::post('/blog/create', [BlogController::class, 'create']);
-Route::get('/blog/{id}/detail', [BlogController::class, 'show'])->name('blog-detail');
-Route::get('/blog/{id}/edit', [BlogController::class, 'edit']);
-Route::patch('/blog/{id}/up', [BlogController::class, 'up']);
-Route::get('/blog/{id}/delete', [BlogController::class, 'delete']);
-Route::get('/blog/{id}/restore', [BlogController::class, 'restore']);
+// Route::get('/blog/add', [BlogController::class, 'add']);
+// Route::post('/blog/create', [BlogController::class, 'create']);
+// Route::get('/blog/{id}/detail', [BlogController::class, 'show'])->name('blog-detail');
+// Route::get('/blog/{id}/edit', [BlogController::class, 'edit']);
+// Route::patch('/blog/{id}/up', [BlogController::class, 'up']);
+// Route::get('/blog/{id}/delete', [BlogController::class, 'delete']);
+// Route::get('/blog/{id}/restore', [BlogController::class, 'restore']);
 
 Route::post('/comment/{blog_id}', [CommentController::class, 'store']);
 Route::get('comment', [CommentController::class, 'index']);
 
 Route::get('/images', [ImageController::class, 'index']);
+
+Route::middleware('guest')->group(function () {
+
+    // login
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'authenticating']);
+});
+// logout
+Route::get('/logout', [AuthController::class, 'logout']);
+
+
+// middlewate satuan
+// Route::get('/blog', [BlogController::class, 'index'])->name('blog')->middleware('auth');
+
+// middleware grou
+Route::middleware(['auth'])->group(function () {
+    Route::get('/blog/add', [BlogController::class, 'add']);
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog');
+    Route::post('/blog/create', [BlogController::class, 'create']);
+    Route::get('/blog/{id}/detail', [BlogController::class, 'show'])->name('blog-detail');
+    Route::get('/blog/{id}/edit', [BlogController::class, 'edit']);
+    Route::patch('/blog/{id}/up', [BlogController::class, 'up']);
+    Route::get('/blog/{id}/delete', [BlogController::class, 'delete']);
+    Route::get('/blog/{id}/restore', [BlogController::class, 'restore']);
+});

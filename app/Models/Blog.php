@@ -65,6 +65,5 @@ class Blog extends Model
     public function categories(): MorphToMany
     {
         return $this->morphToMany(Category::class, 'categoriable', Categoriable::class);
-        //contoh diatas diakhirnya karena di db singular
     }
 }
