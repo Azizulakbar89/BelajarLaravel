@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CommentController;
+use App\Http\Middleware\EnsureTokenIsValid;
 
 Route::get('/', function () {
     return view('welcome');
@@ -92,9 +93,9 @@ Route::get('/logout', [AuthController::class, 'logout']);
 // middlewate satuan
 // Route::get('/blog', [BlogController::class, 'index'])->name('blog')->middleware('auth');
 
-// middleware grou
+// middleware group
 Route::middleware(['auth'])->group(function () {
-    Route::get('/blog/add', [BlogController::class, 'add']);
+    // Route::get('/blog/add', [BlogController::class, 'add']);
     Route::get('/blog', [BlogController::class, 'index'])->name('blog');
     Route::post('/blog/create', [BlogController::class, 'create']);
     Route::get('/blog/{id}/detail', [BlogController::class, 'show'])->name('blog-detail');
@@ -103,3 +104,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/blog/{id}/delete', [BlogController::class, 'delete']);
     Route::get('/blog/{id}/restore', [BlogController::class, 'restore']);
 });
+
+
+Route::get('/blog/add', [BlogController::class, 'add'])->middleware('valid');
