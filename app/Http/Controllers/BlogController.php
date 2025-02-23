@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Blog;
 use App\Models\Tag;
+use App\Models\Blog;
 use App\Models\User;
-use App\Models\Categoriable;
 use App\Models\Image;
 use App\Models\Comment;
+use App\Models\Categoriable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
@@ -34,6 +36,7 @@ class BlogController extends Controller
         // // paginate
         // $blogs = DB::table('blogs')->where('title', 'LIKE', '%' . $title . '%')->Paginate(5);
         // return view('blog', ['blogs' => $blogs]);
+
 
         // Eloquent
         $title = $request->title;
@@ -81,9 +84,19 @@ class BlogController extends Controller
 
     public function show($id)
     {
+
+
+
+
         // $blog = DB::table('blogs')->where('id', $id)->first();
         // menggunakan eloquent
         $blog = Blog::with(['comments', 'tags'])->findOrFail($id); //1-M //tags M-M
+
+        // implementasi gates
+        if (!Gate::allows('update-blog', $blog)) {
+            return redirect()->route('blog');
+        }
+
         // return $blog;
         // if ($blog == null) {
         //     abort(404);
@@ -103,6 +116,18 @@ class BlogController extends Controller
         // if ($blog == null) {
         //     abort(404);
         // }
+
+        // implementasi gates
+        // if (!Gate::allows('update-blog', $blog)) {
+        //     return redirect()->route('blog');
+        // }
+        // Gate::authorize('update-blog', $blog);
+        $response = Gate::inspect('update-blog', $blog);
+        if (!$response->allowed()) {
+            abort(403, $response->message());
+        }
+
+
         return view('blog-edit', ['blog' => $blog, 'tags' => $tags]);
     }
     public function up(Request $request, $id)

@@ -21,7 +21,8 @@
         </div>
     </form>
 
-
+    {{-- CEK LOGIN --}}
+    {{-- {{ auth()->user() }} --}}
 
     {{-- menampilkan data --}}
     <a href="{{ url('/blog/add') }}" class="btn btn-primary mb-3">Tambah Data</a>
@@ -37,6 +38,7 @@
                     <thead>
                         <th>No</th>
                         <th>Title</th>
+                        <th>Author</th>
                         <th>Image</th>
                         <th>Tags</th>
                         <th>Category</th>
@@ -49,6 +51,7 @@
                             <tr>
                                 <td>{{ ($blogs->currentpage() - 1) * $blogs->perpage() + $loop->index + 1 }}</td>
                                 <td>{{ $data->title }}</td>
+                                <td>{{ $data->author ? $data->author->name : 'No Author' }}</td>
                                 <td>{{ $data->image ? $data->image->name : '-' }}</td>
                                 <td>
                                     @foreach ($data->tags as $tes)

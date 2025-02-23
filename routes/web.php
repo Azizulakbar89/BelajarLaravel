@@ -95,8 +95,7 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 // middleware group
 Route::middleware(['auth'])->group(function () {
-    // Route::get('/blog/add', [BlogController::class, 'add']);
-    Route::get('/blog', [BlogController::class, 'index'])->name('blog');
+    Route::get('/blog/add', [BlogController::class, 'add']);
     Route::post('/blog/create', [BlogController::class, 'create']);
     Route::get('/blog/{id}/detail', [BlogController::class, 'show'])->name('blog-detail');
     Route::get('/blog/{id}/edit', [BlogController::class, 'edit']);
@@ -104,6 +103,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/blog/{id}/delete', [BlogController::class, 'delete']);
     Route::get('/blog/{id}/restore', [BlogController::class, 'restore']);
 });
+Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 
 
-Route::get('/blog/add', [BlogController::class, 'add'])->middleware('valid');
+// Route::get('/blog/add', [BlogController::class, 'add'])->middleware('valid');

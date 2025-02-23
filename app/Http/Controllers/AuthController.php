@@ -9,6 +9,7 @@ class AuthController extends Controller
 {
     public function login()
     {
+        $user = Auth::user();
         return view('login');
     }
 

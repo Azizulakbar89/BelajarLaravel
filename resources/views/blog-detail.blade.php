@@ -21,6 +21,11 @@
                     @foreach ($blog->tags as $tag)
                         {{ $tag->name }}
                     @endforeach
+                    <div>
+
+                        <td>{{ $blog->author ? $blog->author->name : 'No Author' }}</td>
+                    </div>
+
 
                 </tr>
 
