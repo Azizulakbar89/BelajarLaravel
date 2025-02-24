@@ -43,6 +43,14 @@ class BlogController extends Controller
         $blogs = Blog::with(['tags', 'comments', 'image', 'ratings', 'categories'])->where("title", "like", "%" . $title . "%")->withTrashed()->orderBy("id", "desc")->paginate(5);
         // cek session login
         // return auth()->user();
+
+        // policy
+        // if ($request->user()->cannot('viewAny', Blog::class)) {
+        //     abort(403);
+        // }
+        Gate::authorize('viewAny', Blog::class);
+
+
         return view("blog", ['blogs' => $blogs]);
         // return $blogs;
 
@@ -93,9 +101,9 @@ class BlogController extends Controller
         $blog = Blog::with(['comments', 'tags'])->findOrFail($id); //1-M //tags M-M
 
         // implementasi gates
-        if (!Gate::allows('update-blog', $blog)) {
-            return redirect()->route('blog');
-        }
+        // if (!Gate::allows('update-blog', $blog)) {
+        //     return redirect()->route('blog');
+        // }
 
         // return $blog;
         // if ($blog == null) {
@@ -103,10 +111,13 @@ class BlogController extends Controller
         // }
         // 
 
+
+
+
         return view('blog-detail', ['blog' => $blog]);
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $tags = Tag::all();
         // $blog = DB::table('blogs')->where('id', $id)->first();
@@ -122,10 +133,17 @@ class BlogController extends Controller
         //     return redirect()->route('blog');
         // }
         // Gate::authorize('update-blog', $blog);
-        $response = Gate::inspect('update-blog', $blog);
-        if (!$response->allowed()) {
-            abort(403, $response->message());
-        }
+        // $response = Gate::inspect('update-blog', $blog);
+        // if (!$response->allowed()) {
+        //     abort(403, $response->message());
+        // }
+
+        // policy
+        // if ($request->user()->cannot('update', $blog)) {
+        //     abort(403);
+        // }
+        Gate::authorize('update', $blog);
+
 
 
         return view('blog-edit', ['blog' => $blog, 'tags' => $tags]);
@@ -142,6 +160,9 @@ class BlogController extends Controller
 
 
         $blog = Blog::findOrFail($id);
+        if ($request->user()->cannot('update', $blog)) {
+            abort(403);
+        }
 
         // // detach
         // $blog->tags()->detach($blog->tags);

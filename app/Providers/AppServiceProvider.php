@@ -27,10 +27,10 @@ class AppServiceProvider extends ServiceProvider
         // pagination 
         Paginator::useBootstrapFive();
         // gates
-        Gate::define('update-blog', function (User $user, Blog $blog) {
-            return $user->id === $blog->author_id
-                ? Response::allow() :
-                Response::deny('You do not have permission to update this blog');
-        });
+        // Gate::define('update-blog', function (User $user, Blog $blog) {
+        //     return $user->id === $blog->author_id
+        //         ? Response::allow() :
+        //         Response::deny('You do not have permission to update this blog');
+        // });
     }
 }
